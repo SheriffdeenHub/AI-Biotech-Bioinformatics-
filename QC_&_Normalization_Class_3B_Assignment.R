@@ -113,9 +113,16 @@ processed_data <- filtered_data
 class(phenotype_data$source_name_ch1) 
 
 #Defining experimental groups (normal vs cancer)
-groups <- factor(phenotype_data$source_name_ch1,
-                 levels = c("pancreatic normal", "pancreatic tumor"),
-                 label = c("normal", "cancer"))
+# Extract condition info and create factor
+groups <- ifelse(grepl("Tumor", phenotype_data$source_name_ch1, ignore.case = TRUE),
+                 "cancer", "normal")
+
+# Convert to factor with clear order
+groups <- factor(groups, levels = c("normal", "cancer"))
+
+# Check result
+table(groups)
 
 class(groups)
 levels(groups)
+
